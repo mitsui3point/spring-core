@@ -36,15 +36,14 @@ public class OrderServiceTest {
         memberService.join(new Member(memberId, "memberA", Grade.VIP));
 
         // when
-        int actual = orderService.createOrder(
-                        memberId,
-                        itemName,
-                        itemPrice)
-                .getDiscountPrice();
+        Order actual = orderService.createOrder(
+                memberId,
+                itemName,
+                itemPrice);
 
         // then
         System.out.println("order = " + actual);
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual.getDiscountPrice()).isEqualTo(expected);
     }
 
     private int getExpectedDiscountPrice() {
