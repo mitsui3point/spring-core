@@ -1,5 +1,6 @@
 package hello.core.member;
 
+import hello.core.config.AppConfig;
 import hello.core.grade.Grade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,8 @@ public class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.memberService = new MemberServiceImpl();
+        AppConfig appConfig = new AppConfig();
+        this.memberService = appConfig.memberService();
     }
 
     @Test

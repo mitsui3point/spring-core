@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.config.AppConfig;
 import hello.core.grade.Grade;
 import hello.core.member.Member;
 import hello.core.member.MemberService;
@@ -17,8 +18,9 @@ public class OrderServiceTest {
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderServiceImpl();
-        memberService = new MemberServiceImpl();
+        AppConfig appConfig = new AppConfig();
+        orderService = appConfig.orderService();
+        memberService = appConfig.memberService();
     }
 
     @Test
