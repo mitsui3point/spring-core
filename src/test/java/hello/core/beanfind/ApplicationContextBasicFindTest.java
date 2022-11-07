@@ -24,7 +24,7 @@ public class ApplicationContextBasicFindTest {
         Class<MemberService> expected = MemberService.class;
 
         //when
-        Object actual = ac.getBean(beanName, requiredType);
+        MemberService actual = ac.getBean(beanName, requiredType);
 
         //then
         assertThat(actual).isInstanceOf(expected);
@@ -38,7 +38,7 @@ public class ApplicationContextBasicFindTest {
         Class<MemberService> expected = MemberService.class;
 
         //when
-        Object actual = ac.getBean(beanType);
+        MemberService actual = ac.getBean(beanType);
 
         //then
         assertThat(actual).isInstanceOf(expected);
@@ -52,7 +52,7 @@ public class ApplicationContextBasicFindTest {
         Class<MemberServiceImpl> expected = MemberServiceImpl.class;
 
         //when
-        Object actual = ac.getBean(beanType);
+        MemberService actual = ac.getBean(beanType);
 
         //then
         assertThat(actual).isInstanceOf(expected);
@@ -65,9 +65,11 @@ public class ApplicationContextBasicFindTest {
         String beanTypeName = "xxx";
 
         //then
-        Assertions.assertThrows(NoSuchBeanDefinitionException.class, () -> {
-            //when
-            Object actual = ac.getBean(beanTypeName);
-        });
+        Assertions.assertThrows(
+                NoSuchBeanDefinitionException.class,
+                () -> {
+                    //when
+                    ac.getBean(beanTypeName);
+                });
     }
 }
