@@ -4,6 +4,8 @@ import hello.core.config.AppConfig;
 import hello.core.member.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,7 +15,7 @@ public class SingletonTest {
     void pureContainer() {
         //given
         AppConfig appConfig = new AppConfig();
-        
+
         //when
         MemberService memberService1 = appConfig.memberService(); // 1. 조회: 호출할 때 마다 객체 생성
         MemberService memberService2 = appConfig.memberService(); // 2. 조회: 호출할 때 마다 객체 생성
@@ -41,5 +43,21 @@ public class SingletonTest {
         assertThat(singletonService1).isSameAs(singletonService2); // singletonService1 == singletonService2; 참조가 같은 경우, equal; value 가 같은 경우
 
         singletonService1.logic();
+    }
+
+    @Test
+    @DisplayName("스프링 컨테이너와 싱글톤")
+    void springContainer() {
+        //given
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        //when
+        MemberService memberService1 = ac.getBean("memberService", MemberService.class);// 1. 조회: 호출할 때 마다 같은 객체를 반환
+        MemberService memberService2 = ac.getBean("memberService", MemberService.class);// 2. 조회: 호출할 때 마다 같은 객체를 반환
+
+        //then
+        System.out.println("memberService1 = " + memberService1);
+        System.out.println("memberService2 = " + memberService2);
+        assertThat(memberService1).isSameAs(memberService1); // singletonService1 == singletonService2; 참조가 같은 경우, equal; value 가 같은 경우
     }
 }
