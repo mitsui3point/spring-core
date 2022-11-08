@@ -76,6 +76,7 @@ public class ConfigurationSingletonTest {
         //then
         System.out.println("appConfig = " + appConfig);
         assertThat(actual).contains(expected);
+        assertThat(appConfig).isInstanceOf(AppConfig.class);//CGLIB 을 사용한 바이트코드 객체가 AppConfig.class 의 instance 인지 확인
     }
 
     static class NoConfigurationAppConfig {
