@@ -14,16 +14,18 @@ class StatefulServiceTest {
         ApplicationContext ac = new AnnotationConfigApplicationContext(TestConfig.class);
         StatefulService statefulService1 = ac.getBean("statefulService", StatefulService.class);
         StatefulService statefulService2 = ac.getBean("statefulService", StatefulService.class);
-        int expected = 20000;
+        int expectedA = 10000;
+        int expectedB = 20000;
 
         //when
-        statefulService1.order("userA", 10000);//ThreadA: A사용자가 10000원 주문
-        statefulService2.order("userB", 20000);//ThreadB: B사용자가 20000원 주문
-        int actual = statefulService1.getPrice();
+        int userAPrice = statefulService1.order("userA", 10000);//ThreadA: A사용자가 10000원 주문
+        int userBPrice = statefulService2.order("userB", 20000);//ThreadB: B사용자가 20000원 주문
 
         //then
-        System.out.println("price = " + actual);
-        assertThat(actual).isEqualTo(expected);
+        System.out.println("userAPrice = " + userAPrice);
+        System.out.println("userBPrice = " + userBPrice);
+        assertThat(userAPrice).isEqualTo(expectedA);
+        assertThat(userBPrice).isEqualTo(expectedB);
     }
 
     static class TestConfig {
