@@ -2,12 +2,13 @@ package hello.core.order.injection;
 
 import hello.core.AutoAppConfig;
 import hello.core.discount.DiscountPolicy;
-import hello.core.member.Member;
-import hello.core.member.MemberRepository;
+import hello.core.grade.Grade;
+import hello.core.member.*;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
 import hello.core.order.injection.example.OrderIncludeComponent;
 import hello.core.order.injection.example.OrderServiceFieldImpl;
+import hello.core.order.injection.example.OrderServiceSetterImpl;
 import hello.core.order.injection.example.OrderTestAppConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,21 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderServiceFieldImplTest {
+    @Test
+    @DisplayName("필드주입 자바만 이용한 테스트 불가능")
+    void fieldInjectionPureJavaNotAbleTest() {
+        //given
+        MemberRepository memberRepository = new MemoryMemberRepository();
+        MemberService memberService = new MemberServiceImpl(memberRepository);
+        OrderServiceFieldImpl orderService = new OrderServiceFieldImpl();
+        int expected = 1000;
+        //when
+        memberService.join(new Member(1L, "userA", Grade.VIP));
+        //then
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> orderService.createOrder(1L, "itemNameA", 10000).getDiscountPrice());
+    }
     @Test
     void fieldInjection() {
         //given
