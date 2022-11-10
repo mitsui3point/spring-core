@@ -19,7 +19,7 @@ public class OrderServiceSetterImpl implements OrderService {
     }
 
     @Autowired
-    public void setDiscountPolicy(@Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
         this.discountPolicy = discountPolicy;
     }
 
