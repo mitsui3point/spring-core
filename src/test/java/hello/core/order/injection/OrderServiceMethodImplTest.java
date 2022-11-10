@@ -3,8 +3,8 @@ package hello.core.order.injection;
 import hello.core.AutoAppConfig;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.MemberRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
+import hello.core.order.injection.example.OrderServiceMethodImpl;
+import hello.core.order.injection.example.OrderTestAppConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,7 +15,7 @@ public class OrderServiceMethodImplTest {
     @Test
     void methodInjectionTest() {
         //given
-        ApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class);
+        ApplicationContext ac = new AnnotationConfigApplicationContext(OrderTestAppConfig.class);
         MemberRepository expectedMember = ac.getBean(MemberRepository.class);
         DiscountPolicy expectedDiscountPolicy = ac.getBean(DiscountPolicy.class);
         //when
