@@ -14,9 +14,9 @@ public class OrderServiceMethodImpl implements OrderService {
     private DiscountPolicy discountPolicy;
 
     @Autowired
-    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public void init(MemberRepository memberRepository, DiscountPolicy rateDiscountPolicy) {
         this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
+        this.discountPolicy = rateDiscountPolicy;
     }
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {

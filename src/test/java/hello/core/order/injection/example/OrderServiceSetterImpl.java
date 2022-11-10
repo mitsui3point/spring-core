@@ -19,8 +19,8 @@ public class OrderServiceSetterImpl implements OrderService {
     }
 
     @Autowired
-    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-        this.discountPolicy = discountPolicy;
+    public void setDiscountPolicy(DiscountPolicy rateDiscountPolicy) {
+        this.discountPolicy = rateDiscountPolicy;
     }
 
     @Override

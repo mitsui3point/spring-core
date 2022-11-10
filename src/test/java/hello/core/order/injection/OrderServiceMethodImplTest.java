@@ -17,7 +17,7 @@ public class OrderServiceMethodImplTest {
         //given
         ApplicationContext ac = new AnnotationConfigApplicationContext(OrderTestAppConfig.class);
         MemberRepository expectedMember = ac.getBean(MemberRepository.class);
-        DiscountPolicy expectedDiscountPolicy = ac.getBean(DiscountPolicy.class);
+        DiscountPolicy expectedDiscountPolicy = ac.getBean("rateDiscountPolicy", DiscountPolicy.class);
         //when
         OrderServiceMethodImpl orderServiceMethodImpl = ac.getBean("orderServiceMethodImpl", OrderServiceMethodImpl.class);
         MemberRepository actualMember = orderServiceMethodImpl.getMemberRepository();

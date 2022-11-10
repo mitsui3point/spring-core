@@ -52,12 +52,13 @@ public class OrderServiceSetterImplTest {
                 NullPointerException.class,
                 () -> orderService.createOrder(1L, "itemNameA", 10000).getDiscountPrice());
     }
+
     @Test
     void setterInjectionTest() {
         //given
         ApplicationContext ac = new AnnotationConfigApplicationContext(OrderTestAppConfig.class);
         MemberRepository expectedMember = ac.getBean(MemberRepository.class);
-        DiscountPolicy expectedDiscountPolicy = ac.getBean(DiscountPolicy.class);
+        DiscountPolicy expectedDiscountPolicy = ac.getBean("rateDiscountPolicy", DiscountPolicy.class);
         //when
         OrderServiceSetterImpl orderServiceSetterImpl = ac.getBean("orderServiceSetterImpl", OrderServiceSetterImpl.class);
         MemberRepository actualMember = orderServiceSetterImpl.getMemberRepository();
