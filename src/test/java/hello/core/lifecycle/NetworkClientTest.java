@@ -19,7 +19,7 @@ public class NetworkClientTest {
 
     @Configuration
     static class NetworkClientConfig {
-        @Bean
+        @Bean(initMethod = "init", destroyMethod = "close")
         public NetworkClient networkClient() {
             System.out.println("NetworkClientConfig.networkClient");
             NetworkClient networkClient = new NetworkClient();
