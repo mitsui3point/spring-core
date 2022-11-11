@@ -1,15 +1,12 @@
 package hello.core.order.injection;
 
 import hello.core.AutoAppConfig;
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.grade.Grade;
 import hello.core.member.*;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
-import hello.core.order.injection.example.OrderIncludeComponent;
-import hello.core.order.injection.example.OrderServiceFieldImpl;
-import hello.core.order.injection.example.OrderServiceSetterImpl;
-import hello.core.order.injection.example.OrderTestAppConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,11 +35,11 @@ public class OrderServiceFieldImplTest {
     @Test
     void fieldInjection() {
         //given
-        ApplicationContext ac = new AnnotationConfigApplicationContext(OrderTestAppConfig.class);
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class, OrderServiceFieldImpl.class);
         MemberRepository expectedMember = ac.getBean(MemberRepository.class);
         DiscountPolicy expectedDiscountPolicy = ac.getBean("rateDiscountPolicy", DiscountPolicy.class);
         //when
-        OrderServiceFieldImpl orderServiceFieldImpl = ac.getBean("orderServiceFieldImpl", OrderServiceFieldImpl.class);
+        OrderServiceFieldImpl orderServiceFieldImpl = ac.getBean(OrderServiceFieldImpl.class);
         MemberRepository actualMember = orderServiceFieldImpl.getMemberRepository();
         DiscountPolicy actualDiscountPolicy = orderServiceFieldImpl.getDiscountPolicy();
         //then
@@ -64,5 +61,28 @@ public class OrderServiceFieldImplTest {
                 NullPointerException.class,
                 //when
                 () -> orderServiceField.createOrder(1L, "itemName", 20000));
+    }
+
+    static class OrderServiceFieldImpl implements OrderService {
+        @Autowired
+        private MemberRepository memberRepository;//안티패턴, 외부에서 변경이 불가능해서 테스트 하기 힘들다는 치명적인 단점이 있다.
+        @Autowired private @MainDiscountPolicy DiscountPolicy discountPolicy;
+
+        @Override
+        public Order createOrder(Long memberId, String itemName, int itemPrice) {
+            Member member = memberRepository.findById(memberId);
+            return new Order(member.getId(),
+                    itemName,
+                    itemPrice,
+                    discountPolicy.discount(member, itemPrice));
+        }
+
+        public MemberRepository getMemberRepository() {
+            return memberRepository;
+        }
+
+        public DiscountPolicy getDiscountPolicy() {
+            return discountPolicy;
+        }
     }
 }
