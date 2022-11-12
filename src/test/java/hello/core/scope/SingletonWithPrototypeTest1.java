@@ -7,6 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,10 +50,14 @@ public class SingletonWithPrototypeTest1 {
 
     @Scope("singleton")
     static class ClientBean {
-        @Autowired
-        private ObjectFactory<PrototypeBean> prototypeBeanFactory;
+        private Provider<PrototypeBean> prototypeBeanFactory;
+
+        public ClientBean(Provider<PrototypeBean> prototypeBeanFactory) {
+            this.prototypeBeanFactory = prototypeBeanFactory;
+        }
+
         public int logic() {
-            PrototypeBean prototypeBean = prototypeBeanFactory.getObject();
+            PrototypeBean prototypeBean = prototypeBeanFactory.get();
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
