@@ -2,6 +2,7 @@ package hello.core.scope;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
@@ -38,7 +39,7 @@ public class SingletonWithPrototypeTest1 {
         ClientBean clientBean1 = ac.getBean(ClientBean.class);
         int clientBean1Count = clientBean1.logic();
 
-        int clientBean2Expected = 2;
+        int clientBean2Expected = 1;
         ClientBean clientBean2 = ac.getBean(ClientBean.class);
         int clientBean2Count = clientBean2.logic();
         //then
@@ -48,16 +49,17 @@ public class SingletonWithPrototypeTest1 {
 
     @Scope("singleton")
     static class ClientBean {
-        private final PrototypeBean prototypeBean;//ClientBean 생성시점에 주입
+        private ApplicationContext ac;
 
         @Autowired
-        public ClientBean(PrototypeBean prototypeBean) {
-            this.prototypeBean = prototypeBean;
+        public ClientBean(ApplicationContext ac) {
+            this.ac = ac;
         }
 
         public int logic() {
-            this.prototypeBean.addCount();
-            return this.prototypeBean.getCount();
+            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+            prototypeBean.addCount();
+            return prototypeBean.getCount();
         }
     }
 
