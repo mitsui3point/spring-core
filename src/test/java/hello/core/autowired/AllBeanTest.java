@@ -1,14 +1,9 @@
 package hello.core.autowired;
 
 import hello.core.AutoAppConfig;
-import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.grade.Grade;
 import hello.core.member.Member;
-import hello.core.member.MemberService;
-import hello.core.member.MemberServiceTest;
-import hello.core.order.Order;
-import hello.core.order.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
